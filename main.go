@@ -5,21 +5,19 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-func main() {
-	arr := []int{5,300,44,3,55,2}
-	Sort(&arr)
-}
 
-type Num interface {
+type numType interface {
 	constraints.Ordered
 }
 
-func Sort[T Num](arr *[]T) {
+
+// Takes a pointer to the slice of type integers, unsigned integers and floats and sorts the slice in ascending order using quick sort algorithm in go routines.
+func Sort[T numType](arr *[]T) {
 	goQuickSort(arr, 0, len(*arr)-1)
 	wg.Wait()
 }
 
-func goQuickSort[T Num](arr *[]T, l int, r int) {
+func goQuickSort[T numType](arr *[]T, l int, r int) {
 	if l < r {
 		pivot := getGoPivot(arr, l, r)
 		if pivot-l+1 > 15 && r-pivot+1 > 15 {
@@ -39,7 +37,7 @@ func goQuickSort[T Num](arr *[]T, l int, r int) {
 	}
 }
 
-func getGoPivot[T Num](arr *[]T, l int, r int) int {
+func getGoPivot[T numType](arr *[]T, l int, r int) int {
 	pivot := (*arr)[r]
 	i := l - 1
 	for j := l; j <= r-1; j++ {
